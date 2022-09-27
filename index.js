@@ -8,7 +8,7 @@
 		l: 40,
 		startPos: {x: 0.0, y: 0.0, z: 0.0},
 		direction: {dx: 1.0, dy: 0.0, dz: 0.0},
-		draw: function(worldToCamera, Mproj) {
+		draw: function() {
 			return `<path d="M ${this.startPos.x} ${this.startPos.y} l ${this.w} 0 l 0 ${this.h} l -${this.w} 0 Z" />`;
 		},
 		toString: function () {
