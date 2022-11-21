@@ -1,23 +1,84 @@
 @charset "utf-8";
 /* CSS Document */
-
 html, body {
-		margin: 0;
-		padding: 0;
-	}
+	margin: 0px;
+	padding: 5px;
+}
+body {
+	background: url("images/BIM-bg-759x500.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+footer {
+	text-align: center;
+}
+footer a {
+	color: inherit;
+	text-decoration: inherit;
+}
 my-svg-vp {
-		display: flex;
-
-		width: 100vw;
-		height: 100vh;
-
-  		justify-content: center;
-  		align-items: center;
-	}
-
-svg {
+	display: flex;
+	flex-flow: row wrap;
+	margin: 2px auto;
+	width: 1000px;
+}
+my-svg-vp > * {
+	flex: 1 100%;
+}
+my-svg-vp > div {
+	background-color: rgba(26, 47, 68, 0.75);
+	padding: 20px;
+	border-radius: 5px;
+	box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.6);
+	margin-bottom: 20px;
+}
+.whiteDIV {
+	background-color: white;
+}
+my-svg-vp div article {
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	column-gap: 10px;
+}
+my-svg-vp div article p {
 	display: block;
-	border: 2px solid green;
-	width: 80vw;
-	height: 80vh;
+	font-size: 1.1em;
+	text-align: left;
+	width: 20%;
+	margin: 0;
+	padding: 0;
+}
+ul {
+	display: flex;
+	align-items: stretch;
+	justify-content: flex-start;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	font-size: 1.1em;
+}
+.controlers {
+	display: block;
+	flex: 1 100%;
+	list-style-type: none;
+	text-align: center;
+}
+.zoomLabel {
+	text-align: left;
+	font-size: 1.2em;
+}
+input[type="range"] {
+	width: 150px;
+}
+svg {
+	background-image: url("images/backyard-01.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	border: 2px solid darkslategray;
+	margin-bottom: 15px;
+	box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.6);
+}
+.materialListTable {
+	width: 100%;
 }

@@ -2,110 +2,86 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Muj prvni</title>
+<title>JS&amp;CSS&amp;SVG training project</title>
 <link href="main.css" rel="stylesheet" type="text/css">
-<!-- <script src="index.js"></script> -->
-<br>
+<script type="text/javascript" src="classes.js"></script> 
+<script type="text/javascript" src="funcs.js"></script> 
 <script type="text/javascript" src="perspective_projection.js"></script>
-
 </head>
-<script language="javascript">
-	const viewBoxSize = [500, 500];
-	const Mproj = new Matrix44();
-	const worldToCamera = new Matrix44();
 
-	const Lumber = {
-		w: 4,
-		h: 2,
-		l: 40,
-		startPos: {x: 0.0, y: 0.0, z: 0.0},
-		rot: {rotX: 45, rotY: 45, rotZ: 0.0},
-		draw: function() {
-			const vertices = [];  //array of Vert3D
-			
-			vertices.push(new Vert3D(this.startPos.x, this.startPos.y, this.startPos.z));  
-			// alert(vertices[0]);
-			vertices.push(new Vert3D(this.w, 0, 0));		//[1]
-			vertices.push(new Vert3D(this.w, this.h, 0));		//[2]
-			vertices.push(new Vert3D(0, this.h, 0));		//[3] end of 1st base
-			vertices.push(new Vert3D(40+0, 40+0, this.l));		//[4] 2nd base
-			vertices.push(new Vert3D(40+this.w, 40+0, this.l));		//[5]
-			vertices.push(new Vert3D(40+this.w, 40+this.h, this.l));		//[6]
-			vertices.push(new Vert3D(40+0, 40+this.h, this.l));		//[7]
-			alert("Vstup:\n"+vertices);
-
-			const vertCamera = new Vert3D(0,0,0); 
-			const projectedVert = new Vert3D(0,0,0);
-			
-			for(var i=0; i<vertices.length; i++) {
-/*				if (i==0) {									//[0] 1st vert is in 0,0,0 >> rotation has no effect
-					vertices[i].x += this.startPos.x;
-					vertices[i].y += this.startPos.y;
-					vertices[i].z += this.startPos.z;
-				}
-				if (this.rot.rotX) { }
-*/
-				multPointMatrix(vertices[i], vertCamera, worldToCamera); 
-				multPointMatrix(vertCamera, vertices[i], Mproj); 
-			}
-			alert("Po tranf\n"+vertices);
-
-			return `<path d="M ${this.startPos.x} ${this.startPos.y} l ${this.w} 0 l 0 ${this.h} l -${this.w} 0 Z" />`;
-		},
-		toString: function () {
-			this.draw();
-		}
-	};
-	
-	function drawScene() {
-		// alert(Mproj);
-		setProjectionMatrix(90, 0.1, 100, Mproj);
-		alert(Mproj);
-    	worldToCamera.setCell(42, -10);     // [3][1] = -10; 
-    	worldToCamera.setCell(43, -20);     // [3][2] = -20; 
-		alert(worldToCamera);
-		let s = document.getElementById("front-view");
-		if (s) {
-			const studs = [];
-			studs.push(Object.create(Lumber));
-			studs.push(Object.create(Lumber));
-				studs[studs.length-1].w = 10;
-				studs[studs.length-1].h = 2;
-				studs[studs.length-1].startPos = {x:10.0, y: 20.0, z: 0.0};
-			var svgCode = "";
-			studs.forEach(element => {svgCode += element.draw()});
-			s.innerHTML = svgCode;
-		}
-	}
-	
-	function test() {
-		const a = [];
-		a.push(new String("Ahoj"));
-		a.push(new Vert3D(1,2,3));
-		alert(a);
-	}
-	
-</script>
-	
-<body onload="drawScene();">
-	<my-svg-vp>
-  <svg id="front-view"
-	   xmlns="http://www.w3.org/2000/svg"
-	   stroke="black"
-	   fill="none"
-	   stroke-width="1px"
-	   preserveAspectRatio="xMidYMin meet"
-	   >
+<body onLoad="drawScene();">
+<my-svg-vp> <img src="images/diy.png" alt="Background image"/>
+	<svg id="perspective-view"
+		   xmlns="http://www.w3.org/2000/svg"
+		   stroke="black"
+		   fill="none"
+		   stroke-width="1px"
+		   stroke-linejoin="round"
+		   stroke-linecap="round"
+		   preserveAspectRatio="xMidYMid meet"
+		   > 
 		<script>
-			const viewbox = `0 0 ${viewBoxSize[0]} ${viewBoxSize[1]}`;
-			document.querySelector('svg').setAttribute('viewBox', viewbox);
-		</script>
-<!--	  <circle cx="50" cy="50" r="40" />
-	  <circle cx="150" cy="50" r="4" />
-	  <svg viewBox="0 0 10 10" x="0" width="10">
-		  <circle cx="5" cy="5" r="4" />
-	  </svg>
---></svg>
+				const viewbox = `0 0 ${viewBoxSize[0]} ${viewBoxSize[1]}`;
+				document.querySelector('svg').setAttribute('viewBox', viewbox);
+			</script> 
+	</svg>
+	<div>
+		<ul>
+			<li class="controlers">Stud span OC: <span id="StudSpan">40</span>"</li>
+			<li class="controlers">Shed length: <span id="ShedLength">18</span> ft</li>
+			<li class="controlers">Shed width: <span id="ShedWidth">10</span> ft</li>
+			<li class="controlers">Shed height: <span id="ShedHeight">7</span> ft</li>
+			<li class="controlers">Roof pitch: <span id="RoofPitch">8</span>/12</li>
+			<li class="controlers">Overhang: <span id="Overhang">15</span>"</li>
+		</ul>
+		<ul>
+			<li class="controlers">
+				<input type="range" min="40" max="60" value="40" step="20" oninput="sliderChange(this.value, 'StudSpan')" onChange="refreshMatList = true; drawScene();">
+			</li>
+			<li class="controlers">
+				<input type="range" min="10" max="20" value="18" step="1" oninput="sliderChange(this.value, 'ShedLength')" onChange="refreshMatList = true; drawScene();">
+			</li>
+			<li class="controlers">
+				<input type="range" min="6" max="12" value="10" step="1" oninput="sliderChange(this.value, 'ShedWidth')" onChange="refreshMatList = true; drawScene();">
+			</li>
+			<li class="controlers">
+				<input type="range" min="6" max="10" value="7" step="1" oninput="sliderChange(this.value, 'ShedHeight')" onChange="refreshMatList = true; drawScene();">
+			</li>
+			<li class="controlers">
+				<input type="range" min="2" max="12" value="8" step="1" oninput="sliderChange(this.value, 'RoofPitch')" onChange="refreshMatList = true; drawScene();">
+			</li>
+			<li class="controlers">
+				<input type="range" min="0" max="25" value="15" step="5" oninput="sliderChange(this.value, 'Overhang')" onChange="refreshMatList = true; drawScene();">
+			</li>
+		</ul>
+		<br />
+		<ul>
+			<li class="controlers zoomLabel">Zoom and place</li>
+			<li class="controlers">Zoom: <span id="zoomScene">50</span>%</li>
+			<li class="controlers">Horizontal shift<span id="hShift" style="visibility: hidden">100</span></li>
+			<li class="controlers">Vertical shift<span id="vShift" style="visibility: hidden">100</span></li>
+		</ul>
+		<ul>
+			<li class="controlers zoomLabel">your shed</li>
+			<li class="controlers">
+				<input type="range" min="20" max="100" value="50" step="5" oninput="sliderChange(this.value, 'zoomScene')" onChange="refreshMatList = false; drawScene();">
+			</li>
+			<li class="controlers">
+				<input type="range" min="0" max="200" value="100" step="5" oninput="sliderChange(this.value, 'hShift')" onChange="refreshMatList = false; drawScene();">
+			</li>
+			<li class="controlers">
+				<input type="range" min="0" max="150" value="100" step="5" oninput="sliderChange(this.value, 'vShift')" onChange="refreshMatList = false; drawScene();">
+			</li>
+		</ul>
+	</div>
+	<div class="whiteDIV">
+		<article>
+			<p>Material list:</p>
+			<table class="materialListTable" id="materialList">
+			</table>
+		</article>
+	</div>
 </my-svg-vp>
+<footer>&copy; <a href="mailto:studio@studio-schwarz.cz">Ing. Martin Schwarz</a>, Nov 2022</footer>
 </body>
 </html>
