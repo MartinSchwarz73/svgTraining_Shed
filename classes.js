@@ -2,49 +2,81 @@
 
 // vertice or vector 3D
 class Vert3D {
+	// private fields
+	#x = 0;
+	#y = 0;
+	#z = 0;
+
 	constructor(x, y, z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.#x = x;
+		this.#y = y;
+		this.#z = z;
 	}
 
-	set value(v) { // setter, v = {x:, y:, z:}
-		this.x = v.x;
-		this.y = v.y;
-		this.z = v.z;
+	// getters
+	get value() { 
+		return {x: this.#x, y: this.#y, z: this.#z};
+	}
+	
+	get x() {
+		return this.#x;
 	}
 
-	get value() { // getter
-		return this;
+	get y() {
+		return this.#y;
 	}
+
+	get z() {
+		return this.#z;
+	}
+
+	//setters
+	set value(v) { //v = {x:, y:, z:}
+		this.#x = v.x;
+		this.#y = v.y;
+		this.#z = v.z;
+	}
+
+
+	set x(v) {
+		this.#x = v;
+	}
+
+	set y(v) {
+		this.#y = v;
+	}
+
+	set z(v) {
+		this.#z = v;
+	}
+
 
 	duplicate() { // duplicate me
-		return new Vert3D(this.x, this.y, this.z);
+		return new Vert3D(this.#x, this.#y, this.#z);
 	}
 
 	cross(v) { // cross products of two vectors me x v, returns new vector
-		const r = new Vert3D();
-		r.x = this.y * v.z - this.z * v.y;
-		r.y = this.z * v.x - this.x * v.z;
-		r.z = this.x * v.y - this.y * v.x;
-		return r;
+		return new Vert3D(
+			this.#y * v.z - this.#z * v.y,
+			this.#z * v.x - this.#x * v.z,
+			this.#x * v.y - this.#y * v.x
+		);
 	}
 
 	normalize() { // convert to unit vector (save direction but length = 1)
-		let n = this.x * this.x + this.y * this.y + this.z * this.z;
+		let n = this.#x * this.#x + this.#y * this.#y + this.#z * this.#z;
 		if (n > 0) {
 			let factor = 1 / Math.sqrt(n);
-			this.x *= factor, this.y *= factor, this.z *= factor;
+			this.#x *= factor, this.#y *= factor, this.#z *= factor;
 		}
-		return this;
 	}
 
 	multByMatrix(m) { // multiplication Vect (me) x matrix (m)
 		let tmp = new Vert3D();
 
-		tmp.x = this.x * m.getCell(0, 0) + this.y * m.getCell(1, 0) + this.z * m.getCell(2, 0);
-		tmp.y = this.x * m.getCell(0, 1) + this.y * m.getCell(1, 1) + this.z * m.getCell(2, 1);
-		tmp.z = this.x * m.getCell(0, 2) + this.y * m.getCell(1, 2) + this.z * m.getCell(2, 2);
+		tmp.x = this.#x * m.getCell(0, 0) + this.#y * m.getCell(1, 0) + this.#z * m.getCell(2, 0);
+		tmp.y = this.#x * m.getCell(0, 1) + this.#y * m.getCell(1, 1) + this.#z * m.getCell(2, 1);
+		tmp.z = this.#x * m.getCell(0, 2) + this.#y * m.getCell(1, 2) + this.#z * m.getCell(2, 2);
 		// var w = this.x * m.getCell(14) + this.y * m.getCell(24) + this.z * m.getCell(34) +  M.getCell(44); 
 
 		// normalize if w is different than 1 (convert from homogeneous to Cartesian coordinates)
@@ -53,11 +85,9 @@ class Vert3D {
 			outP.y /= w; 
 			outP.z /= w; 
 		} */
-		this.x = tmp.x;
-		this.y = tmp.y;
-		this.z = tmp.z;
-
-		return this;
+		this.#x = tmp.x;
+		this.#y = tmp.y;
+		this.#z = tmp.z;
 	}
 
 	toString() {
@@ -75,28 +105,28 @@ class Matrix33 {
 		];
 	}
 
-	set cells(abr) { //setter - abr = [Vert3D, Vert3D, Vert3D]
-		this.m[0][0] = abr[0]['x'];
-		this.m[1][0] = abr[0]['y'];
-		this.m[2][0] = abr[0]['z'];
-		this.m[0][1] = abr[1]['x'];
-		this.m[1][1] = abr[1]['y'];
-		this.m[2][1] = abr[1]['z'];
-		this.m[0][2] = abr[2]['x'];
-		this.m[1][2] = abr[2]['y'];
-		this.m[2][2] = abr[2]['z'];
+	set cells(abr) { //setter - abr[ = [Vert3D, Vert3D, Vert3D]]
+		this.m[0][0] = abr[0].x;
+		this.m[1][0] = abr[0].y;
+		this.m[2][0] = abr[0].z;
+		this.m[0][1] = abr[1].x;
+		this.m[1][1] = abr[1].y;
+		this.m[2][1] = abr[1].z;
+		this.m[0][2] = abr[2].x;
+		this.m[1][2] = abr[2].y;
+		this.m[2][2] = abr[2].z;
 	}
 
-	get cells() { // getter
+	get cells() { // getter - all matrix
 		return this.m;
+	}
+
+	getCell(r, c) { // get one cell r=row, c=column
+		return this.m[r][c];
 	}
 
 	setCell(r, c, v) { // set one cell r=row, c=column, v=value
 		this.m[r][c] = v;
-	}
-
-	getCell(r, c) { // return one cell r=row, c=column
-		return this.m[r][c];
 	}
 
 	multiply(m) { // matrix33 x matrix33, this.m x m, return new matrix
@@ -114,8 +144,8 @@ class Matrix33 {
 
 	transpose() { // return new matrix33 - transposed this.m
 		let tm = new Matrix33();
-		for (var i = 0; i < 3; i++) {
-			for (var j = 0; j < 3; j++) {
+		for (let i = 0; i < 3; i++) {
+			for (let j = 0; j < 3; j++) {
 				tm.setCell(i, j, this.m[j][i]);
 			}
 		}
@@ -142,7 +172,7 @@ class Matrix44 {
 		this.m[3] = [arr[12], arr[13], arr[14], arr[15]];
 	}
 
-	get cells() { // getter
+	get cells() { // getter - all matrix
 		return this.m;
 	}
 
@@ -174,11 +204,12 @@ class Matrix44 {
 	}
 
 	multiply(m) { // matrix44 x matrix44, this.m x m, return new matrix
-		const mm = new Matrix44();
-		for (let i = 0; i < 4; ++i) {
-			for (let j = 0; j < 4; ++j) {
-				mm[i][j] = this.m[i][0] * m[0][j] + this.m[i][1] * m[1][j]
-					+ this.m[i][2] * m[2][j] + this.m[i][3] * m[3][j];
+		let mm = new Matrix44();
+		for (let i = 1; i < 5; i++) {
+			for (let j = 1; j < 5; j++) {
+				mm.setCell((i*10+j).toString(),
+					this.m[i-1][0] * m.getCell("1" + j.toString()) + this.m[i-1][1] * m.getCell("2" + j.toString()) +
+					this.m[i-1][2] * m.getCell("3" + j.toString()) + this.m[i-1][3] * m.getCell("4" + j.toString()));
 			}
 		}
 		return mm;
