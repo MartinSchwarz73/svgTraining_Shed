@@ -209,7 +209,7 @@ class Matrix44 {
 			for (let j = 1; j < 5; j++) {
 				mm.setCell((i*10+j).toString(),
 					this.m[i-1][0] * m.getCell(`1${j}`) + this.m[i-1][1] * m.getCell(`2${j}`) +
-					this.m[i-1][2] * m.getCell(`3${j}`)) + this.m[i-1][3] * m.getCell(`4${j}`));
+					this.m[i-1][2] * m.getCell(`3${j}`) + this.m[i-1][3] * m.getCell(`4${j}`));
 			}
 		}
 		return mm;
