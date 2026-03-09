@@ -15,4 +15,5 @@ Live demo:
 https://martinschwarz73.github.io/svgTraining_Shed/
 
 Screenshot:
+
 ![shed planner screenshot](docs/screenshot.png)
