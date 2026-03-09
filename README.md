@@ -1,19 +1,23 @@
-# Garden Shed Planner (SVG)
+# Parametric Garden Shed Planner
 
-Simple interactive web tool for planning a small garden shed.
+![Screenshot](docs/screenshot.png)
 
-Features:
-- adjustable width and length
-- configurable stud spacing
-- SVG based visualization
-- positioning on background garden image
+Interactive web tool for configuring a simple wooden garden shed.
 
-Tech:
-HTML, CSS, JavaScript, SVG
-
-Live demo:
+Live demo:  
 https://martinschwarz73.github.io/svgTraining_Shed/
 
-Screenshot:
+## Features
 
-![shed planner screenshot](docs/screenshot.png)
+- adjustable shed width and length
+- configurable stud spacing
+- dynamic SVG rendering of walls and roof
+- positioning of shed on background garden image
+- automatic material list calculation
+
+## Tech
+
+HTML  
+CSS  
+JavaScript  
+SVG
